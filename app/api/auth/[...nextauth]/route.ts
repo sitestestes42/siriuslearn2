@@ -1,3 +1,18 @@
-import { handlers } from '@/lib/auth'
+import NextAuth from 'next-auth'
+import Google from 'next-auth/providers/google'
 
-export const { GET, POST } = handlers
+const handler = NextAuth({
+  providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+  ],
+  pages: {
+    signIn: '/login',
+  },
+  secret: process.env.NEXTAUTH_SECRET || 'qrS9iRqn3vmEwdCcQuny1u54RwYUPIAXJ03oCiHsxCA=',
+  trustHost: true,
+})
+
+export { handler as GET, handler as POST }

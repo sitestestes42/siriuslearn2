@@ -1,10 +1,12 @@
-import type { Metadata } from 'next'
 import './styles/globals.css'
-import Providers from './providers'
+import { Inter } from 'next/font/google'
+import { Providers } from './providers'
 
-export const metadata: Metadata = {
-  title: 'SiriusLearn - Assistente de Estudos com IA',
-  description: 'Seu assistente de IA para estudos e cotidiano.',
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata = {
+  title: 'SiriusLearn',
+  description: 'Sua IA de estudos e cotidiano',
 }
 
 export default function RootLayout({
@@ -14,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body>
+      <body className={inter.className}>
         <Providers>{children}</Providers>
       </body>
     </html>
