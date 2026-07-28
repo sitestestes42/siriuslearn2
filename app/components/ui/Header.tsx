@@ -1,60 +1,31 @@
 'use client'
 
-import { signOut, useSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 import { useTheme } from 'next-themes'
-import { useEffect, useState } from 'react'
-import { FiSun, FiMoon, FiLogOut } from 'react-icons/fi'
+import { FiMenu, FiSun, FiMoon, FiLogOut, FiUser } from 'react-icons/fi'
 
-export default function Header() {
+export default function Header({ sidebarOpen, setSidebarOpen }: { sidebarOpen: boolean; setSidebarOpen: (v: boolean) => void }) {
   const { data: session } = useSession()
   const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-
-  // Evita mismatch de hidratação com next-themes
-  useEffect(() => setMounted(true), [])
-
-  const userName = session?.user?.name ?? 'Estudante'
-  const userImage = session?.user?.image
 
   return (
-    <header className="sticky top-0 z-20 flex items-center justify-between gap-4 border-b border-dark-border bg-dark-bg/80 backdrop-blur px-6 py-4 lg:pl-6 pl-16">
-      <div>
-        <p className="text-sm text-slate-400">Bem-vindo(a) de volta,</p>
-        <p className="font-semibold text-dark-text">{userName}</p>
-      </div>
-
+    <header className="flex items-center justify-between px-4 lg:px-6 py-3 border-b border-dark-border bg-dark-card/50 backdrop-blur-sm">
       <div className="flex items-center gap-3">
-        <button
-          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          className="p-2 rounded-xl border border-dark-border hover:bg-dark-card transition-colors"
-          aria-label="Alternar tema"
-        >
-          {mounted && theme === 'dark' ? (
-            <FiSun className="text-lg text-primary-400" />
-          ) : (
-            <FiMoon className="text-lg text-primary-400" />
-          )}
+        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden p-2 rounded-lg hover:bg-dark-bg/50">
+          <FiMenu className="text-xl" />
         </button>
-
-        {userImage ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={userImage}
-            alt={userName}
-            className="h-9 w-9 rounded-full border border-dark-border"
-          />
-        ) : (
-          <div className="h-9 w-9 rounded-full bg-primary-500/20 flex items-center justify-center text-primary-400 font-semibold">
-            {userName.charAt(0).toUpperCase()}
-          </div>
-        )}
-
-        <button
-          onClick={() => signOut({ callbackUrl: '/login' })}
-          className="p-2 rounded-xl border border-dark-border hover:bg-dark-card transition-colors"
-          aria-label="Sair"
-        >
-          <FiLogOut className="text-lg text-slate-400" />
+        <h2 className="text-lg font-semibold">SiriusLearn</h2>
+      </div>
+      <div className="flex items-center gap-3">
+        <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="p-2 rounded-lg hover:bg-dark-bg/50">
+          {theme === 'dark' ? <FiSun /> : <FiMoon />}
+        </button>
+        <div className="flex items-center gap-2 text-sm">
+          <FiUser />
+          <span>{session?.user?.name || 'Usuário'}</span>
+        </div>
+        <button onClick={() => signOut()} className="p-2 rounded-lg hover:bg-dark-bg/50 text-red-400">
+          <FiLogOut />
         </button>
       </div>
     </header>
