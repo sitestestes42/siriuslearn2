@@ -24,9 +24,7 @@ export default function ChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  if (status === 'loading') {
-    return <div className="flex items-center justify-center min-h-screen bg-dark-bg text-white">Carregando...</div>
-  }
+  if (status === 'loading') return <div className="flex items-center justify-center min-h-screen bg-dark-bg text-white">Carregando...</div>
 
   const enviarMensagem = async () => {
     if (!input.trim() || isLoading) return
@@ -89,7 +87,6 @@ export default function ChatPage() {
 
   return (
     <div className="flex flex-col h-screen bg-dark-bg text-white">
-      {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-dark-border bg-dark-card flex-wrap gap-2">
         <div>
           <h1 className="text-xl font-bold">💬 Chat SiriusLearn</h1>
@@ -97,31 +94,16 @@ export default function ChatPage() {
         </div>
         <div className="flex items-center gap-4 flex-wrap">
           <div className="flex items-center gap-2">
-            <span className={`text-sm ${modoPai === 'estudo' ? 'text-primary-400' : 'text-dark-text/40'}`}>
-              📚 Estudo
-            </span>
+            <span className={`text-sm ${modoPai === 'estudo' ? 'text-primary-400' : 'text-dark-text/40'}`}>📚 Estudo</span>
             <button
               onClick={() => setModoPai(modoPai === 'estudo' ? 'cotidiano' : 'estudo')}
-              className={`w-12 h-6 rounded-full transition-all ${
-                modoPai === 'estudo' ? 'bg-primary-500' : 'bg-dark-border'
-              } relative`}
+              className={`w-12 h-6 rounded-full transition-all ${modoPai === 'estudo' ? 'bg-primary-500' : 'bg-dark-border'} relative`}
             >
-              <div
-                className={`w-4 h-4 bg-white rounded-full transition-all absolute top-1 ${
-                  modoPai === 'estudo' ? 'left-1' : 'left-7'
-                }`}
-              />
+              <div className={`w-4 h-4 bg-white rounded-full transition-all absolute top-1 ${modoPai === 'estudo' ? 'left-1' : 'left-7'}`} />
             </button>
-            <span className={`text-sm ${modoPai === 'cotidiano' ? 'text-primary-400' : 'text-dark-text/40'}`}>
-              🌍 Cotidiano
-            </span>
+            <span className={`text-sm ${modoPai === 'cotidiano' ? 'text-primary-400' : 'text-dark-text/40'}`}>🌍 Cotidiano</span>
           </div>
-
-          <select
-            value={modo}
-            onChange={(e) => setModo(e.target.value)}
-            className="px-3 py-1.5 bg-dark-bg border border-dark-border rounded-lg text-sm"
-          >
+          <select value={modo} onChange={(e) => setModo(e.target.value)} className="px-3 py-1.5 bg-dark-bg border border-dark-border rounded-lg text-sm">
             {modoPai === 'estudo' ? (
               <>
                 <option value="smart">🧠 Smart</option>
@@ -141,7 +123,6 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center">
@@ -152,20 +133,8 @@ export default function ChatPage() {
         ) : (
           messages.map((msg, idx) => (
             <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div
-                className={`max-w-[80%] px-4 py-3 rounded-2xl ${
-                  msg.role === 'user'
-                    ? 'bg-primary-500 text-white'
-                    : 'bg-dark-card border border-dark-border prose prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-ol:my-1'
-                }`}
-              >
-                {msg.role === 'user' ? (
-                  msg.content
-                ) : (
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {msg.content}
-                  </ReactMarkdown>
-                )}
+              <div className={`max-w-[80%] px-4 py-3 rounded-2xl ${msg.role === 'user' ? 'bg-primary-500 text-white' : 'bg-dark-card border border-dark-border prose prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-ol:my-1'}`}>
+                {msg.role === 'user' ? msg.content : <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>}
               </div>
             </div>
           ))
@@ -182,25 +151,10 @@ export default function ChatPage() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
       <div className="p-4 border-t border-dark-border bg-dark-card">
         <div className="flex gap-3">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && enviarMensagem()}
-            placeholder="Digite sua mensagem..."
-            className="flex-1 px-4 py-3 bg-dark-bg border border-dark-border rounded-xl focus:outline-none focus:border-primary-500"
-            disabled={isLoading}
-          />
-          <button
-            onClick={enviarMensagem}
-            disabled={isLoading || !input.trim()}
-            className="px-6 py-3 bg-primary-500 rounded-xl hover:bg-primary-600 disabled:opacity-50 transition"
-          >
-            Enviar
-          </button>
+          <input type="text" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && enviarMensagem()} placeholder="Digite sua mensagem..." className="flex-1 px-4 py-3 bg-dark-bg border border-dark-border rounded-xl focus:outline-none focus:border-primary-500" disabled={isLoading} />
+          <button onClick={enviarMensagem} disabled={isLoading || !input.trim()} className="px-6 py-3 bg-primary-500 rounded-xl hover:bg-primary-600 disabled:opacity-50 transition">Enviar</button>
         </div>
       </div>
     </div>
