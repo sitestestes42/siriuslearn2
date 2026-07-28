@@ -3,9 +3,8 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { 
-  FiHome, FiMessageSquare, FiSearch, FiImage, FiVideo, 
-  FiBarChart2, FiShield, FiBook, FiClock, FiEdit, FiUsers,
-  FiYoutube, FiTrendingUp, FiSettings, FiStar
+  FiHome, FiMessageSquare, FiBook, FiClock, FiEdit, 
+  FiTrendingUp, FiUsers, FiYoutube, FiBarChart2, FiSettings, FiStar
 } from 'react-icons/fi'
 
 const menuItems = [
